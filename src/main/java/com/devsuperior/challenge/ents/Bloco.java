@@ -1,8 +1,9 @@
 package com.devsuperior.challenge.ents;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,27 +14,28 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_participante")
-public class Participante {
+@Table(name = "tb_bloco")
+public class Bloco {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	@Column(unique = true)
-	private String email;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant inicio;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant fim;
 	
-	@ManyToMany
-	private List<Atividade> atividades = new ArrayList<>();
+	@ManyToMany(mappedBy = "blocos")
+	private Set<Atividade> atividade = new HashSet<>();
 	
-	public Participante(){
+	public Bloco() {
 	}
 
-	public Participante(Long id, String nome, String email) {
+	public Bloco(Long id, Instant inicio, Instant fim) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
+		this.inicio = inicio;
+		this.fim = fim;
 	}
 
 	public Long getId() {
@@ -44,29 +46,29 @@ public class Participante {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Instant getInicio() {
+		return inicio;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setInicio(Instant inicio) {
+		this.inicio = inicio;
 	}
 
-	public String getEmail() {
-		return email;
+	public Instant getFim() {
+		return fim;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setFim(Instant fim) {
+		this.fim = fim;
+	}
+	
+	public Set<Atividade> getAtividade() {
+		return atividade;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
-	}
-	
-	public List<Atividade> getAtividades() {
-		return atividades;
 	}
 
 	@Override
@@ -77,7 +79,7 @@ public class Participante {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Participante other = (Participante) obj;
+		Bloco other = (Bloco) obj;
 		return Objects.equals(id, other.id);
 	}
 }

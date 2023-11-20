@@ -1,8 +1,10 @@
 package com.devsuperior.challenge.ents;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -24,7 +27,7 @@ public class Atividade {
 	private String nome;
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
-	private Double price;
+	private Double preco;
 	
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
@@ -33,15 +36,21 @@ public class Atividade {
 	@ManyToMany
 	private List<Participante> participantes = new ArrayList<>();
 	
+	@ManyToMany
+	@JoinTable(name = "tb_atividade_bloco",
+	           joinColumns = @JoinColumn(name = "atividade_id"),
+	           inverseJoinColumns = @JoinColumn(name = "bloco_id"))
+	private Set<Bloco> blocos = new HashSet<>();
+	
 	public Atividade() {
 	}
 
-	public Atividade(Long id, String nome, String descricao, Double price) {
+	public Atividade(Long id, String nome, String descricao, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.price = price;
+		this.preco = preco;
 	}
 
 	public Long getId() {
@@ -69,11 +78,11 @@ public class Atividade {
 	}
 
 	public Double getPrice() {
-		return price;
+		return preco;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setPrice(Double preco) {
+		this.preco = preco;
 	}
 
 	@Override
