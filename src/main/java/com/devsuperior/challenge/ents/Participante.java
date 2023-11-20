@@ -9,39 +9,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_atividade")
-public class Atividade {
+@Table(name = "tb_participante")
+public class Participante {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
-	@Column(columnDefinition = "TEXT")
-	private String descricao;
-	private Double price;
-	
-	@ManyToOne
-	@JoinColumn(name = "categoria_id")
-	private Categoria categoria;
+	@Column(unique = true)
+	private String email;
 	
 	@ManyToMany
-	private List<Participante> participantes = new ArrayList<>();
-	
-	public Atividade() {
+	private List<Atividade> atividades = new ArrayList<>();
+		
+	public Participante(){
 	}
 
-	public Atividade(Long id, String nome, String descricao, Double price) {
+	public Participante(Long id, String nome, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.descricao = descricao;
-		this.price = price;
+		this.email = email;
 	}
 
 	public Long getId() {
@@ -60,20 +52,12 @@ public class Atividade {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
@@ -81,18 +65,10 @@ public class Atividade {
 		return Objects.hash(id);
 	}
 	
-	public Categoria getCategoria() {
-		return categoria;
+	public List<Atividade> getAtividades() {
+		return atividades;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	public List<Participante> getParticipantes() {
-		return participantes;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -101,7 +77,7 @@ public class Atividade {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Atividade other = (Atividade) obj;
+		Participante other = (Participante) obj;
 		return Objects.equals(id, other.id);
 	}
 }
